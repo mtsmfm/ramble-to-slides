@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ramble to Slides</title>
+  </head>
+  <!-- Kept hidden until the first render has filled in the text and styles (no flash of an empty page). -->
+  <body hidden>
+    <!--
+      Elements tagged with data-i18n / data-i18n-placeholder / data-i18n-title carry no text
+      of their own; applyI18n() in src/i18n.ts fills them in the current UI language.
+    -->
+
+    <!-- Shown until a project directory is open; the app below stays hidden until then. -->
+    <section id="start" class="start">
+      <a class="fork-ribbon" href="https://github.com/mtsmfm/ramble-to-slides" target="_blank" rel="noopener"
+        >Fork me on GitHub</a
+      >
+      <div class="start-card">
+        <h1 class="start-name">Ramble to Slides</h1>
+        <p class="start-lead" data-i18n="start.lead"></p>
+        <button id="btn-open" class="primary start-btn" data-i18n="btn.open"></button>
+        <p class="open-hint" data-i18n="btn.open.hint"></p>
+        <button id="btn-open-last" class="start-btn" hidden></button>
+        <p class="start-problem" id="start-problem" hidden></p>
+        <div class="start-lang">
+          <label for="start-ui-language" data-i18n="hdr.uiLang"></label>
+          <select id="start-ui-language">
+            <option value="en">English</option>
+            <option value="ja">日本語</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <header id="app-header" hidden>
+      <div class="bar-row">
+        <span class="app-name">Ramble to Slides</span>
+        <span class="project-name" id="project-name"></span>
+        <span class="status" id="status"></span>
+        <span class="speak-wrap"
+          ><span class="dot" id="speak-dot"></span><span data-i18n="hdr.speaking"></span></span
+        >
+        <span class="speak-wrap" data-i18n-title="hdr.agent.title"
+          ><span class="dot agent" id="agent-dot"></span><span id="agent-label"></span></span>
+        <span class="lang-wrap">
+          <label for="ui-language" data-i18n="hdr.uiLang"></label>
+          <select id="ui-language">
+            <option value="en">English</option>
+            <option value="ja">日本語</option>
+          </select>
+        </span>
+      </div>
+      <div class="buttons">
+        <button id="btn-switch" data-i18n="btn.switchProject"></button>
+        <button id="btn-settings" data-i18n="settings.title"></button>
+        <button id="btn-start" class="primary" disabled></button>
+        <button id="btn-end" class="danger" disabled data-i18n="btn.end"></button>
+        <span class="timer-group">
+          <span class="timer" id="timer">00:00</span>
+          <button id="btn-timer-start" data-i18n="btn.timerStart"></button>
+          <button id="btn-timer-stop" disabled data-i18n="btn.timerStop"></button>
+          <button id="btn-timer-reset" data-i18n="btn.timerReset"></button>
+        </span>
+      </div>
+    </header>
+
+    <dialog id="settings" class="settings">
+      <form method="dialog" class="settings-head">
+        <strong data-i18n="settings.title"></strong>
+        <button value="close" data-i18n-title="tut.close.title">×</button>
+      </form>
+      <div class="settings-row">
+        <span class="settings-label" data-i18n="settings.folder"></span>
+        <span class="settings-value" id="settings-project-name"></span>
+      </div>
+      <div class="settings-row">
+        <label class="settings-label" for="speech-language" data-i18n="settings.speechLang"></label>
+        <select id="speech-language">
+          <option value="en">English</option>
+          <option value="ja">日本語</option>
+        </select>
+      </div>
+      <div class="settings-row">
+        <label class="settings-label" for="asr-model" data-i18n="settings.asrModel"></label>
+        <select id="asr-model">
+          <option value="" disabled data-i18n="asrModel.choose"></option>
+          <option value="turbo" data-i18n="asrModel.turbo"></option>
+          <option value="small" data-i18n="asrModel.small"></option>
+          <option value="webspeech-local" data-i18n="asrModel.webspeechLocal"></option>
+          <option value="webspeech-cloud" data-i18n="asrModel.webspeechCloud"></option>
+        </select>
+      </div>
+      <p class="settings-hint" data-i18n="asrModel.hint"></p>
+      <div class="settings-row">
+        <span class="settings-label" data-i18n="settings.modelCache"></span>
+        <span class="settings-value" id="model-cache-size"></span>
+        <button type="button" id="btn-clear-cache" data-i18n="btn.clearCache"></button>
+      </div>
+      <p class="settings-hint" data-i18n="modelCache.hint"></p>
+      <div class="settings-block">
+        <label class="settings-label" for="glossary" data-i18n="glossary.label"></label>
+        <textarea
+          id="glossary"
+          rows="2"
+          data-i18n-placeholder="glossary.placeholder" 
+          readonly
+        ></textarea>
+        <p class="settings-hint" data-i18n="glossary.hint"></p>
+      </div>
+    </dialog>
+
+    <section id="tutorial" class="tutorial" hidden>
+      <div class="tutorial-head">
+        <span id="tutorial-text"></span>
+        <button id="tutorial-close" type="button" data-i18n-title="tut.close.title">×</button>
+      </div>
+      <div id="tutorial-steps">
+        <p data-i18n="tut.choose"></p>
+        <details class="tutorial-method" name="tut-method" open>
+          <summary><strong data-i18n="tut.relay.title"></strong><span data-i18n="tut.relay.tag"></span></summary>
+          <p data-i18n="tut.relay.desc"></p>
+          <ul class="tutorial-proscons">
+            <li data-i18n="tut.relay.pro"></li>
+            <li data-i18n="tut.relay.con"></li>
+          </ul>
+          <ol>
+            <li>
+              <span data-i18n="tut.step1.pre"></span><a
+                href="https://chromewebstore.google.com/detail/webmcp-cloud-relay/pjbkneijjlmmbcncpjjjhbmcnejamdco"
+                target="_blank"
+                rel="noopener"
+                >WebMCP Cloud Relay</a
+              ><span data-i18n="tut.step1.post"></span>
+            </li>
+            <li>
+              <span data-i18n="tut.step2"></span>
+              <pre><code>claude mcp add --transport http webmcp &lt;MCP URL&gt;
+<span data-i18n="tut.codexComment"></span>
+codex mcp add webmcp --url &lt;MCP URL&gt;</code></pre>
+            </li>
+            <li>
+              <span data-i18n="tut.step3.pre"></span><strong>Connect this tab</strong><span data-i18n="tut.step3.post"></span>
+            </li>
+            <li>
+              <span data-i18n="tut.step4.pre"></span><code>get_instructions</code><span data-i18n="tut.step4.post"></span>
+              <pre><code id="agent-prompt" data-i18n="tut.agentPrompt"></code></pre>
+              <button type="button" data-copy="agent-prompt" data-i18n="btn.copy"></button>
+              <span data-i18n="tut.step4.tail.pre"></span><code>/mcp</code><span data-i18n="tut.step4.tail.post"></span>
+            </li>
+          </ol>
+        </details>
+        <details class="tutorial-method" name="tut-method">
+          <summary><strong data-i18n="tut.cdm.title"></strong><span data-i18n="tut.cdm.tag"></span></summary>
+          <p>
+            <a href="https://github.com/ChromeDevTools/chrome-devtools-mcp" target="_blank" rel="noopener"
+              >chrome-devtools-mcp</a
+            ><span data-i18n="tut.cdm.desc"></span>
+          </p>
+          <ul class="tutorial-proscons">
+            <li data-i18n="tut.cdm.pro"></li>
+            <li data-i18n="tut.cdm.con"></li>
+          </ul>
+          <ol>
+            <li data-i18n="tut.cdm.step1"></li>
+            <li>
+              <span data-i18n="tut.cdm.step2"></span>
+              <pre><code id="cdm-command">claude mcp add chrome-devtools -- npx -y chrome-devtools-mcp@latest --categoryExperimentalWebmcp --chromeArg=--enable-features=WebMCP
+<span data-i18n="tut.codexComment"></span>
+codex mcp add chrome-devtools -- npx -y chrome-devtools-mcp@latest --categoryExperimentalWebmcp --chromeArg=--enable-features=WebMCP</code></pre>
+              <span data-i18n="tut.cdm.step2.tail.pre"></span><code>--no-usage-statistics</code><span data-i18n="tut.cdm.step2.tail.post"></span>
+            </li>
+            <li>
+              <span data-i18n="tut.cdm.step3"></span>
+              <pre><code id="agent-prompt-cdm"></code></pre>
+              <button type="button" data-copy="agent-prompt-cdm" data-i18n="btn.copy"></button>
+            </li>
+            <li data-i18n="tut.cdm.step4"></li>
+          </ol>
+        </details>
+      </div>
+      <details class="tutorial-alt">
+        <summary data-i18n="tut.alt.summary"></summary>
+        <p>
+          <span data-i18n="tut.alt.intro.pre"></span><code>document.modelContext</code
+          ><span data-i18n="tut.alt.intro.post"></span>
+        </p>
+        <ul>
+          <li>
+            <strong data-i18n="tut.alt.selfhost.title"></strong><span data-i18n="tut.alt.selfhost.pre"></span><a
+              href="https://github.com/mtsmfm/webmcp-cloud-relay#self-hosting-the-relay"
+              target="_blank"
+              rel="noopener"
+              data-i18n="tut.alt.selfhost.link"
+              ></a
+            ><span data-i18n="tut.alt.selfhost.post"></span>
+          </li>
+          <li>
+            <strong data-i18n="tut.alt.native.title"></strong><span data-i18n="tut.alt.native.body"></span>
+          </li>
+          <li>
+            <strong data-i18n="tut.alt.chatgpt.title"></strong><span data-i18n="tut.alt.chatgpt.pre"></span><a
+              href="https://x.com/OpenAIDevs/status/2092344959248761263"
+              target="_blank"
+              rel="noopener"
+              data-i18n="tut.alt.chatgpt.link"
+              ></a
+            ><span data-i18n="tut.alt.chatgpt.post"></span>
+          </li>
+          <li>
+            <strong data-i18n="tut.alt.claude.title"></strong><span data-i18n="tut.alt.claude.pre"></span><a
+              href="https://github.com/anthropics/claude-code/issues/30645"
+              target="_blank"
+              rel="noopener"
+              data-i18n="tut.alt.claude.link"
+              ></a
+            ><span data-i18n="tut.alt.claude.post"></span>
+          </li>
+          <li>
+            <strong data-i18n="tut.alt.check.title"></strong><span data-i18n="tut.alt.check.pre"></span><a
+              href="https://github.com/beaufortfrancois/model-context-tool-inspector"
+              target="_blank"
+              rel="noopener"
+              data-i18n="tut.alt.check.link"
+              ></a
+            ><span data-i18n="tut.alt.check.post"></span>
+          </li>
+        </ul>
+        <p>
+          <span data-i18n="tut.alt.more.pre"></span><a
+            href="https://github.com/GoogleChromeLabs/webmcp-tools/blob/main/AWESOME_WEBMCP.md"
+            target="_blank"
+            rel="noopener"
+            >AWESOME_WEBMCP</a
+          ><span data-i18n="tut.alt.more.post"></span>
+        </p>
+      </details>
+      <p class="hint" id="tutorial-hint"></p>
+    </section>
+
+    <main id="app-main" hidden>
+      <!-- 1. Transcript -->
+      <section class="panel">
+        <h2 data-i18n="panel.transcript"></h2>
+        <div class="panel-body" id="transcript-body">
+          <p class="empty" id="transcript-empty" data-i18n="transcript.empty"></p>
+          <ul id="segments"></ul>
+        </div>
+      </section>
+
+      <!-- 2. Questions -->
+      <section class="panel">
+        <h2 data-i18n="panel.questions"></h2>
+        <div class="panel-body">
+          <div class="q-card idle" id="question-card"></div>
+          <p class="hint" data-i18n="q.hint"></p>
+          <details class="history" id="history">
+            <summary>
+              <span data-i18n="q.history.summary"></span> (<span id="history-count"
+                >0</span
+              >)
+            </summary>
+            <div id="history-list"></div>
+          </details>
+        </div>
+        <div class="notes-block">
+          <div class="notes-head">
+            <label for="notes" data-i18n="notes.label"></label>
+            <select
+              id="notes-history"
+              class="history-select"
+              data-i18n-title="notes.history.title"
+              disabled
+            ></select>
+          </div>
+          <textarea
+            id="notes"
+            data-i18n-placeholder="notes.placeholder" 
+            readonly
+          ></textarea>
+        </div>
+      </section>
+
+      <!-- 3. Outline / slides -->
+      <section class="panel">
+        <div class="tab-row">
+          <div class="tabs" role="tablist">
+            <button id="tab-outline" role="tab" aria-selected="true" aria-controls="pane-outline" data-i18n="tab.outline"></button>
+            <button id="tab-slides" role="tab" aria-selected="false" aria-controls="pane-slides" data-i18n="tab.slides"></button>
+          </div>
+          <select
+            id="doc-history"
+            class="history-select"
+            data-i18n-title="doc.history.title"
+            disabled
+          ></select>
+        </div>
+        <div class="tools" id="slides-tools" hidden>
+          <button id="btn-download-md" data-i18n="btn.downloadMd"></button>
+          <button id="btn-download-html" data-i18n="btn.downloadHtml"></button>
+          <button id="btn-print" data-i18n="btn.print"></button>
+          <span class="slide-count" id="slide-count"></span>
+        </div>
+        <div class="panel-body">
+          <div id="pane-outline" role="tabpanel"></div>
+          <div id="pane-slides" role="tabpanel" hidden>
+            <p class="empty" id="slides-empty" data-i18n="slides.empty"></p>
+            <iframe id="slides-frame" data-i18n-title="slides.frame.title" hidden></iframe>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- WebMCP polyfill must load before the app -->
+    <script src="./webmcp-polyfill.js"></script>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

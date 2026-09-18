@@ -1,0 +1,24 @@
+{
+  "name": "ramble-to-slides",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "predev": "node scripts/copy-vad-assets.mjs",
+    "dev": "vite",
+    "prebuild": "node scripts/copy-vad-assets.mjs",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "copy-vad-assets": "node scripts/copy-vad-assets.mjs"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "^4.2.0",
+    "@marp-team/marp-core": "^4.4.0",
+    "@ricky0123/vad-web": "^0.0.30"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2"
+  }
+}

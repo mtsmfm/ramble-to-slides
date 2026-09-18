@@ -1,0 +1,9 @@
+minimumReleaseAge: 10080
+ignoredBuiltDependencies:
+  - onnxruntime-node
+  - protobufjs
+  - sharp
+allowBuilds:
+  onnxruntime-node: false
+  protobufjs: false
+  sharp: false
